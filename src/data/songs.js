@@ -36,7 +36,7 @@ const songs = [
     title: "Boss Battle 1",
     composer: "Motoi Sakuraba",
     game: "Kid Icarus: Uprising",
-    mood: ["intense"],
+    mood: ["intense", "hype"],
     youtubeUrl: "https://www.youtube.com/watch?v=Il8jvPbj3-E",
   },
   {
@@ -84,7 +84,7 @@ const songs = [
     title: "Enter Champion Cynthia",
     composer: "Go Ichinose",
     game: "Pokémon Diamond/Pearl/Platinum",
-    mood: ["epic"],
+    mood: ["epic", "intense"],
     youtubeUrl: "https://www.youtube.com/watch?v=cho2NsCKZZc",
   },
   {
@@ -94,6 +94,30 @@ const songs = [
     game: "Super Mario Galaxy 2",
     mood: ["upbeat"],
     youtubeUrl: "https://www.youtube.com/watch?v=3ljGPyIbw6o",
+  },
+  {
+    id: 13,
+    title: "Grasslands, All the Way",
+    composer: "Yoko Shimomura",
+    game: "Mario & Luigi: Bowser's Inside Story",
+    mood: ["upbeat", "adventurous"],
+    youtubeUrl: "https://youtu.be/koqj-2GE81M?si=oymVBgbn7sNLUgm9",
+  },
+  {
+    id: 14,
+    title: "Someday",
+    composer: "Takeharu Ishimoto",
+    game: "The World Ends With You",
+    mood: ["hype"],
+    youtubeUrl: "https://youtu.be/5DRtXLMt3Qo?si=Ly6gwfF1Ya34wC1M",
+  },
+  {
+    id: 15,
+    title: "Attack of the Killer Queen",
+    composer: "Toby Fox",
+    game: "DELTARUNE Chapter 2",
+    mood: ["hype"],
+    youtubeUrl: "https://youtu.be/XR2QQMfeJbg?si=0Ig7DtxAOYiuTlIa",
   },
 ];
 

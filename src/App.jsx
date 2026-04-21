@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage.jsx'
 import BrowsePage from './pages/BrowsePage.jsx'
 import FavoritesPage from './pages/FavoritesPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
+import AboutPage from './pages/AboutPage.jsx'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="browse" element={<BrowsePage />} />
         <Route path="favorites" element={<FavoritesPage />} />
+        <Route path='about' element={<AboutPage/>}/>
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

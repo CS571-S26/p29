@@ -2,42 +2,39 @@ import { useState } from 'react'
 import { Form, Row, Col, Button } from 'react-bootstrap'
 import songs from '../data/songs'
 import TrackCard from '../components/TrackCard'
+import TrackGrid from '../components/TrackGrid'
 
 function getFavorites() {
-  return JSON.parse(sessionStorage.getItem('favorites') || '[]')
-}
-
-function saveFavorites(favs) {
-  sessionStorage.setItem('favorites', JSON.stringify(favs))
+  return JSON.parse(sessionStorage.getItem('favorites') || '[]');
 }
 
 export default function HomePage() {
   const [query, setQuery] = useState('')
   const [favorites, setFavorites] = useState(getFavorites)
   const [randomSong, setRandomSong] = useState(null)
-
   const favIds = favorites.map(f => f.id)
+  const filtered = query.trim()
+  ? songs.filter(s =>
+      [s.title, s.composer, s.game, ...s.mood].some(field =>
+        field.toLowerCase().includes(query.toLowerCase())
+      )
+    )
+  : []
 
   function handleToggleFavorite(song) {
     const updated = favIds.includes(song.id)
       ? favorites.filter(f => f.id !== song.id)
       : [...favorites, song]
-    setFavorites(updated)
-    saveFavorites(updated)
+
+    // update favorites
+    setFavorites(updated);
+    sessionStorage.setItem('favorites', JSON.stringify(updated));
   }
 
   function handleRandom() {
-    const pick = songs[Math.floor(Math.random() * songs.length)]
-    setRandomSong(pick)
+    const pick = songs[Math.floor(Math.random() * songs.length)];
+    setRandomSong(pick);
   }
-
-  const filtered = query.trim()
-    ? songs.filter(s =>
-        [s.title, s.composer, s.game, ...s.mood].some(field =>
-          field.toLowerCase().includes(query.toLowerCase())
-        )
-      )
-    : []
 
   return (
     <div>
@@ -54,8 +51,7 @@ export default function HomePage() {
               <TrackCard
                 song={randomSong}
                 isFavorited={favIds.includes(randomSong.id)}
-                onToggleFavorite={handleToggleFavorite}
-              />
+                onToggleFavorite={handleToggleFavorite}/>
             </Col>
           </Row>
         )}
@@ -69,25 +65,14 @@ export default function HomePage() {
             type="search"
             placeholder="e.g. battle, Zelda, Yoko Shimomura..."
             value={query}
-            onChange={e => setQuery(e.target.value)}
-          />
+            onChange={e => setQuery(e.target.value)}/>
         </Form.Group>
 
         {query.trim() && filtered.length === 0 && (
           <p className="text-muted">No tracks matched your search.</p>
         )}
 
-        <Row xs={1} md={2} lg={3} className="g-4">
-          {filtered.map(song => (
-            <Col key={song.id}>
-              <TrackCard
-                song={song}
-                isFavorited={favIds.includes(song.id)}
-                onToggleFavorite={handleToggleFavorite}
-              />
-            </Col>
-          ))}
-        </Row>
+        <TrackGrid songs={filtered} favIds={favIds} onToggleFavorite={handleToggleFavorite}/>
       </section>
     </div>
   )

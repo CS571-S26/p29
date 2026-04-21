@@ -1,13 +1,8 @@
 import { useState } from 'react'
-import { Row, Col } from 'react-bootstrap'
-import TrackCard from '../components/TrackCard'
+import TrackGrid from '../components/TrackGrid'
 
 function getFavorites() {
   return JSON.parse(sessionStorage.getItem('favorites') || '[]')
-}
-
-function saveFavorites(favs) {
-  sessionStorage.setItem('favorites', JSON.stringify(favs))
 }
 
 export default function FavoritesPage() {
@@ -15,8 +10,8 @@ export default function FavoritesPage() {
 
   function handleToggleFavorite(song) {
     const updated = favorites.filter(f => f.id !== song.id)
-    setFavorites(updated)
-    saveFavorites(updated)
+    setFavorites(updated);
+    sessionStorage.setItem('favorites', JSON.stringify(updated));
   }
 
   return (
@@ -27,17 +22,10 @@ export default function FavoritesPage() {
       {favorites.length === 0 ? (
         <p>You haven't favorited any tracks yet. Browse songs on the <strong>Home</strong> or <strong>Browse by Mood</strong> pages and hit ♡ Favorite!</p>
       ) : (
-        <Row xs={1} md={2} lg={3} className="g-4">
-          {favorites.map(song => (
-            <Col key={song.id}>
-              <TrackCard
-                song={song}
-                isFavorited={true}
-                onToggleFavorite={handleToggleFavorite}
-              />
-            </Col>
-          ))}
-        </Row>
+        <TrackGrid
+          songs={favorites}
+          onToggleFavorite={handleToggleFavorite}
+          isFavorited={true}/>
       )}
     </div>
   )
