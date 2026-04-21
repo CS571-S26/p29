@@ -22,7 +22,7 @@ export default function AboutPage() {
       </section>
 
       <footer aria-label="Credits" style={{ marginTop: 'auto', textAlign: 'center', paddingTop: '1rem', borderTop: '1px solid #dee2e6' }}>
-        <p style={{fontStyle: "italic"}}>All tracks and game titles are the property of their respective composers, publishers, and rights holders. Soundscapes of Gaming does not host any audio; all "Listen on YouTube" links direct to external YouTube pages.</p>
+        <p style={{fontStyle: "italic"}}>All tracks and game titles are the property of their respective composers, publishers, and rights holders.</p>
       </footer>
     </div>
   )
