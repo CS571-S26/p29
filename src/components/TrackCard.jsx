@@ -125,14 +125,14 @@ export default function TrackCard({ song, isFavorited, onToggleFavorite }) {
         </div>
       </div>
 
-      <Card.Body className="d-flex flex-column">
+      <Card.Body className="d-flex flex-row align-items-center">
         <div className="mb-2 d-flex gap-1 flex-wrap">
           {song.mood.map(m => (
             <Badge key={m} bg="secondary">{m}</Badge>
           ))}
         </div>
 
-        <div className="mt-auto d-flex gap-2 flex-wrap">
+        <div className="ms-auto mt-auto d-flex gap-2 flex-wrap">
           <Button
             variant={isFavorited ? 'danger' : 'outline-danger'}
             size="sm"

@@ -1,21 +1,32 @@
 import { useState } from 'react'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import songs from '../data/songs'
 import TrackGrid from '../components/TrackGrid'
+import TrackSorter from '../components/TrackSorter';
+import MoodSelector from '../components/MoodSelector';
+import GameSelector from '../components/GameSelector';
 
 const moods = [...new Set(songs.flatMap(song => song.mood))];
+const games = [...new Set(songs.flatMap(song => song.game))];
 
 function getFavorites() {
   return JSON.parse(sessionStorage.getItem('favorites') || '[]')
 }
 
 export default function BrowsePage() {
-  const [selectedMoods, setSelectedMoods] = useState([])
+  const [selectedMoods, setSelectedMoods] = useState([]);
+  const [selectedGames, setSelectedGames] = useState([]);
   const [favorites, setFavorites] = useState(getFavorites)
   const favIds = favorites.map(f => f.id)
-  const filtered = selectedMoods.length === 0
+  const filtered = selectedMoods.length === 0 && selectedGames.length === 0
     ? songs
-    : songs.filter(song => selectedMoods.some(mood => song.mood.includes(mood)));
+    : songs.filter(song => {
+      const matchesMood = selectedMoods.length === 0 ? true : selectedMoods.some(mood => song.mood.includes(mood));
+      const matchesGame = selectedGames.length === 0 ? true : selectedGames.some(game => song.game === game);
+      return matchesMood && matchesGame;
+    });
+  const [sortField, setSortField] = useState('title');
+  const [ascending, setAscending] = useState(true);
 
   function HandleToggleFavorite(song) {
     const updated = favIds.includes(song.id)
@@ -27,45 +38,53 @@ export default function BrowsePage() {
     sessionStorage.setItem('favorites', JSON.stringify(updated))
   }
 
-  function UpdateSelectedMoods(selected) {
-    if (selected == null) {
-      setSelectedMoods([]);
-      return;
-    }
-
-    let newSelectedMoods = [...selectedMoods, selected];
-
-    if (selectedMoods.includes(selected)) {
-      newSelectedMoods = selectedMoods.filter(mood => mood !== selected);
-    }
-
-    setSelectedMoods(newSelectedMoods);
-  }
-
   return (
     <div>
-      <h1 className="mb-3">Browse by Mood</h1>
+      <h1 className="mb-3">Browse Songs</h1>
 
-      <section aria-label="Mood filter">
-        <h2 className="visually-hidden">Filter by mood</h2>
-        <ButtonGroup className="mb-4 flex-wrap gap-2" aria-label="Mood filter">
-          <Button
-            variant={selectedMoods.length === 0 ? 'dark' : 'outline-dark'}
-            onClick={() => UpdateSelectedMoods(null)}>
-            All
-          </Button>
-          {moods.map(mood => (
-            <Button
-              key={mood}
-              variant={selectedMoods.includes(mood) ? 'dark' : 'outline-dark'}
-              onClick={() => UpdateSelectedMoods(mood)}>
-              {mood.charAt(0).toUpperCase() + mood.slice(1)}
-            </Button>
-          ))}
-        </ButtonGroup>
-      </section>
+      <h2 className="visually-hidden">Sort/Filter Songs</h2>
+        <Button
+          variant='dark'
+          className='mb-3'
+          onClick={() => {
+            setSelectedGames([]);
+            setSelectedMoods([]);
+          }}>
+            Clear Filters
+        </Button>
 
-      <TrackGrid songs={filtered} favIds={favIds} onToggleFavorite={HandleToggleFavorite}/>
+        <div className='d-flex gap-3 mb-4'>
+          <div className='d-flex flex-column gap-2'>
+            <section aria-label="Mood filter">
+              <h3 className="visually-hidden">Filter by mood</h3>
+              <MoodSelector
+                selectedMoods={selectedMoods}
+                setSelectedMoods={setSelectedMoods}
+                moods={moods}/>
+            </section>
+
+            <section aria-label="Game filter" >
+              <h3 className="visually-hidden">Filter by game title</h3>
+              <GameSelector
+                selectedGames={selectedGames}
+                setSelectedGames={setSelectedGames}
+                games={games}/>
+            </section>
+          </div>
+
+            <section aria-label='Sort songs' className='ms-auto'>
+              <h3 className='visually-hidden'>Sort songs</h3>
+              <TrackSorter
+                sortField={sortField}
+                setSortField={setSortField}
+                ascending={ascending}
+                setAscending={setAscending}/>
+            </section>
+        </div>
+
+
+      <h2 className="visually-hidden">Track List</h2>
+      <TrackGrid songs={[...filtered].sort((a, b) => (ascending ? 1 : -1) * a[sortField].localeCompare(b[sortField]))} favIds={favIds} onToggleFavorite={HandleToggleFavorite}/>
     </div>
   )
 }

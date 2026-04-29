@@ -22,10 +22,13 @@ export default function FavoritesPage() {
       {favorites.length === 0 ? (
         <p>You haven't favorited any tracks yet. Browse songs on the <strong>Home</strong> or <strong>Browse by Mood</strong> pages and hit ♡ Favorite!</p>
       ) : (
-        <TrackGrid
-          songs={favorites}
-          onToggleFavorite={handleToggleFavorite}
-          isFavorited={true}/>
+        <>
+          <h2 className="visually-hidden">Your favorited tracks</h2>
+          <TrackGrid
+            songs={favorites}
+            onToggleFavorite={handleToggleFavorite}
+            isFavorited={true}/>
+        </>
       )}
     </div>
   )

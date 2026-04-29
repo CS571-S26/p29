@@ -42,6 +42,7 @@ export default function HomePage() {
       <p className="text-muted mb-4">Discover and save your favorite video game music.</p>
 
       <section aria-label="Random track">
+        <h2 className="visually-hidden">Random Track</h2>
         <Button variant="secondary" onClick={handleRandom} className="mb-4">
           🎲 Random Track
         </Button>
@@ -63,7 +64,7 @@ export default function HomePage() {
           <Form.Label>Search by title, game, composer, or mood</Form.Label>
           <Form.Control
             type="search"
-            placeholder="e.g. battle, Zelda, Yoko Shimomura..."
+            placeholder="e.g. upbeat, Zelda, Yoko Shimomura..."
             value={query}
             onChange={e => setQuery(e.target.value)}/>
         </Form.Group>

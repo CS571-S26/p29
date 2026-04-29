@@ -1,4 +1,4 @@
-import { Outlet, NavLink } from 'react-router-dom'
+import { Outlet, NavLink, Link } from 'react-router-dom'
 import { Navbar, Nav, Container } from 'react-bootstrap'
 
 export default function Layout() {
@@ -6,12 +6,12 @@ export default function Layout() {
     <div>
       <Navbar bg="dark" variant="dark" expand="md">
         <Container>
-          <Navbar.Brand href="#">Soundscapes of Gaming</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">Soundscapes of Gaming</Navbar.Brand>
           <Navbar.Toggle aria-controls="main-nav" />
           <Navbar.Collapse id="main-nav">
             <Nav className="ms-auto">
               <Nav.Link as={NavLink} to="/">Home</Nav.Link>
-              <Nav.Link as={NavLink} to="/browse">Browse by Mood</Nav.Link>
+              <Nav.Link as={NavLink} to="/browse">Browse Songs</Nav.Link>
               <Nav.Link as={NavLink} to="/favorites">Favorites</Nav.Link>
               <Nav.Link as={NavLink} to="/about">About</Nav.Link>
             </Nav>
